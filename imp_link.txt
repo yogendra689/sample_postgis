@@ -15,3 +15,4 @@ http://ngauthier.com/2013/08/postgis-and-rails-a-simple-approach.html
 http://jsfiddle.net/WCR5L/
 https://gist.github.com/rafalgalka/5765919http://jsfiddle.net/WCR5L/
 http://jsfiddle.net/WCR5L/
+https://www.mapbox.com/mapbox.js/example/v1.0.0/
