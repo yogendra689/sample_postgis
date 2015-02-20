@@ -1,0 +1,17 @@
+http://cookieshq.co.uk/posts/introduction-to-postgis-and-rails-pt-2/
+https://gist.github.com/rafalgalka/5765919
+http://gis.stackexchange.com/questions/33102/how-to-import-kml-file-with-custom-data-to-postgres-postgis-database
+https://github.com/nofxx/georuby
+http://postgis.refractions.net/docs/ch04.html
+http://stackoverflow.com/questions/13790131/cant-save-polygon-with-postgis-rgeo
+http://gis.stackexchange.com/questions/23689/loading-data-onto-postgis-using-kml-files-with-attibute-data
+https://github.com/square/border_patrol
+https://github.com/apneadiving/Google-Maps-for-Rails/wiki/Kml
+http://en.wikipedia.org/wiki/Well-known_text
+https://github.com/rgeo/activerecord-postgis-adapter
+https://github.com/nofxx/georuby/blob/master/spec/geo_ruby/kml_spec.rb
+http://daniel-azuma.com/articles/georails/part-1
+http://ngauthier.com/2013/08/postgis-and-rails-a-simple-approach.html
+http://jsfiddle.net/WCR5L/
+https://gist.github.com/rafalgalka/5765919http://jsfiddle.net/WCR5L/
+http://jsfiddle.net/WCR5L/
