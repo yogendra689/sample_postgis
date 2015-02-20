@@ -1,0 +1,23 @@
+database: &DATABASE
+  adapter: postgis
+  pool: 5
+  timeout: 5000
+  statement_limit: 100
+  host: localhost
+  schema_search_path: public
+
+development:
+  <<: *DATABASE
+  database: sample_postgis_development
+
+test:
+  <<: *DATABASE
+  database: sample_postgis_test
+
+staging:
+  <<: *DATABASE
+  database: sample_postgis_staging
+
+production:
+  <<: *DATABASE
+  database: sample_postgis_production

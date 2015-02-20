@@ -1,0 +1,326 @@
+<!-- <!DOCTYPE html PUBLIC "- // W3C // DTD XHTML 1.0 Transitional // EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" > 
+<html xmlns = "HTTP : //www.w3.org/1999/xhtml " > 
+<head > 
+<meta HTTP-equiv = "Content-Type" content = "text / html; charset = UTF-8"  /> 
+<meta name = "viewport" content = "Initial-Scale = 1.0, user-Scalable = no"  /> 
+<title> Automatic prompting </title> 
+<Script type = "text / JavaScript" src = "http://api.map.baidu.com/api?v=1.3" > </Script > 
+<style type = "text / CSS"> 
+body { font-size : 13px ; margin : 0px } 
+#container { width : 600px ; height : 400px } 
+.label { margin-left : 20px ; font-weight : bold ; font-size : 14px } 
+</style > 
+</head > 
+<body> 
+<div style = "margin: 50px"> Please enter: <input type = "text" ID = "suggestId " size = "30" value = "Baidu" style = "width: 300px;"/> </div > 
+<div ID="searchResultPanel" style = "border: 1px Solid # C0C0C0; width: 300px; height: 600px; position: absolute; left: 650px; Top: 20px; " > </div > 
+<div ID="container"></div> 
+<Script type = "text/JavaScript"> 
+function G (ID) { 
+return document.getElementById (ID); 
+} 
+var Map =  new BMap.Map("container"); 
+var Point =  new BMap.Point ( 116.3964 , 39.9093 ); 
+map.centerAndZoom (Point, 13 ); 
+map.enableScrollWheelZoom (); 
+var ac =  new BMap.Autocomplete (     // build an autocomplete object 
+{ " input " : " suggestId " 
+, " location " : Map 
+}); ac.addEventListener ( 
+" onhighlight " , function (e) {   // the mouse on the drop-down list The event 
+var str =  "" ; 
+var _value = e.fromitem.value; 
+var value =  "" ; 
+if (e.fromitem.index >  - 1 ) { 
+value = _value.province +   _value.city +   _value.district +   _value .street +   _value.business
+iness; 
+}     
+str =  " FromItem <br/> index = " + e.fromitem.index + " <br/> value = " + value;     
+value =  "" ; 
+if (e.toitem.index >  - 1 ) { 
+_value = e.toitem.value; 
+value = _value.province +   _value.city +   _value.district +   _value.street +   _value.business; 
+}     
+str +=  " <br/><br/> ToItem index = "  + e.toitem.index +  "<br/> value = "  + value; 
+G ( " searchResultPanel " ) .innerHTML = str; 
+}); 
+var myValue; 
+ac.addEventListener("onconfirm" , function (e) {
+    // click on the drop-down list after the event 
+    var _value = e.item.value; 
+myValue = _value.province +   _value.city +   _value.district +   _value.street +   _value.business; 
+G ( " searchResultPanel " ) .innerHTML = " onconfirm <br /> index = "  + e.item.index +  " <br /> myValue = "  + myValue;     setPlace (); }); 
+function setPlace () { // create an address parser instance 
+var myGeo =  new bmap. geocoder (); // will address the analytical results displayed on the map, and adjust the map vision 
+myGeo.getPoint (myValue, function (Point) { 
+if (Point) { 
+map.centerAndZoom (Point, 16 ); 
+Map.addOverlay ( new bmap .Marker (Point)); 
+} 
+}, " Beijing " ); 
+} 
+</Script> 
+</body> 
+</html> -->
+
+<!--div width="300px">请输入:<input type="text" id="suggestId" size="20" value="" style="width:150px;" /><input type="button" value="submit" id="submit" onClick="getAddress()"></div>
+<!--div id="result" style=" width:400px; float:left"></div-->
+<html>
+<div style="width:800px;height:600px;border:1px solid gray; float:right" id="container"></div>
+
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+<script type="text/javascript">
+
+var search="frm_street";  //定义查询框ID；
+var local="广汉市";    // 定义本地地址；
+var lng="104.290493"; //经度
+var lat="30.981528"; //纬度
+var spoi  = new BMap.Point(lng,lat); //经纬度
+
+var map = new BMap.Map("container");  //创建地图实例
+var point = new BMap.Point(lng,lat); //创建点坐标
+map.centerAndZoom(point,15);          //初始化地图，设置中心点坐标和地图级别
+map.enableScrollWheelZoom();        //启用滚轮放大缩小地图
+
+//add_flag0();                          
+//=================获取元素==========================\\
+function G(id) {
+    return document.getElementById(id);
+}
+function GV(id){
+    return document.getElementById(id).value;
+}
+
+//=================添加标记==========================\\
+  //添加标记
+  function add_flag0(){
+  var localmarker=new BMap.Marker(new BMap.Point(lng,lat));  
+  map.addOverlay(localmarker); 
+  }
+
+  //添加目的地标记
+  function add_flag1(point){
+  map.clearOverlays();    //清除地图上所有覆盖物
+  add_flag0();      //添加标记
+  var newmarker=new BMap.Marker(new BMap.Point(point.lng,point.lat));  
+  map.addOverlay(newmarker); 
+      newmarker.enableDragging();//开启拖动
+  driveline(spoi,point);
+   longAndtime(spoi,point);
+   
+   document.edit.lng.value=point.lng;
+  document.edit.lat.value=point.lat;
+}
+  function add_flag2(){
+
+  }
+//=================从输入框获取地址地址==============\\
+function getAddress(){
+get_point(GV(search));
+}
+
+//=================地址解析(根据地址获取坐标点)==========================\\
+
+   function get_point(address){
+  var myGeo = new BMap.Geocoder(); // 创建地址解析器实例
+  myGeo.getPoint(address, function(point){
+  if (point) {          //如果地址能解析，标记
+       add_flag1(point);
+         }else{
+      alert("地址无法找到!");
+          }
+          },local);
+  }
+          
+
+//=================地址反解析(根据坐标点获取地址)==========================\\
+ function get_address(e){
+ var gc = new BMap.Geocoder();   // 创建地址反解析器实例
+ var pt = e.point;
+ var result;
+    add_flag1(pt);
+    gc.getLocation(pt, function(rs){
+        var addComp = rs.addressComponents;
+    if (addComp.street + addComp.streetNumber=="")
+    {
+      result="地址无法找到！";
+    }
+    else{ 
+    result=addComp.street + addComp.streetNumber;
+    }
+     document.edit.frm_street.value=result;
+         return result;
+     
+    });    
+  
+ }
+
+
+//==============自动下拉列表=========================\\
+
+var ac = new BMap.Autocomplete( {"input" : search,"location" : local} );    //建立一个自动完成的对象
+ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件  
+var _value = e.item.value;
+myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+setPlace();
+});
+
+function setPlace(){
+  //  map.clearOverlays();    //清除地图上所有覆盖物
+    function myFun(){
+        var pp = ls.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+        add_flag1(pp);
+    }
+    var ls = new BMap.LocalSearch(local, { //智能搜索
+      onSearchComplete: myFun
+    });
+    ls.search(myValue);
+}
+
+
+//=================搜索线路==========================\\
+
+function driveline(myP1,myP2){
+ var driving = new BMap.DrivingRoute(map);    //创建驾车实例   
+ driving.search(myP1, myP2);                 //第一个驾车搜索   
+ driving.setSearchCompleteCallback(function(){       
+ var pts = driving.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组      
+ var polyline = new BMap.Polyline(pts);          
+ map.addOverlay(polyline);               
+
+               
+ var lab1 = new BMap.Label("起点",{position:myP1});       //创建2个label      
+ var lab2 = new BMap.Label("终点",{position:myP2});          
+ map.addOverlay(lab1);       
+ map.addOverlay(lab2);                  
+ setTimeout(function(){           
+ map.setViewport([myP1,myP2]);          //调整到最佳视野     
+ },1000);           
+ });}
+
+
+  //=================驾车时间距离==============\\
+function longAndtime(spoi,point){
+  var output="";
+  var searchComplete = function (results){
+    if (transit.getStatus() != BMAP_STATUS_SUCCESS){ return ;}
+     var plan = results.getPlan(0);
+        output += plan.getDuration(true) + "\n";                //获取时间
+        output += "总路程为：" ;
+        output += plan.getDistance(true) + "\n";             //获取距离
+  }
+var transit = new BMap.DrivingRoute(map, {renderOptions: {map: map,panel:"result"},
+//var transit = new BMap.DrivingRoute(map, {renderOptions: {map: map},
+  // onSearchComplete: searchComplete,
+  //  onPolylinesSet: function(){        
+  //     setTimeout(function(){alert(output)},"1000");}
+    });
+transit.search(spoi, point);
+  }
+
+
+
+//=================单击地图监听事件==========================\\
+map.addEventListener("click", function(e){ 
+ get_address(e);
+ // alert(get_address(e));
+
+});
+
+
+</script>
+
+<!--div style="width:800px;height:600px;border:1px solid gray; float:right" id="container"></div-->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+<script type="text/javascript">
+
+var local="广汉市";    // 定义本地地址；
+var lng="104.290493"; //经度
+var lat="30.981528"; //纬度
+var spoi  = new BMap.Point(lng,lat); //经纬度
+var map = new BMap.Map("map");  //创建地图实例
+var point = new BMap.Point(lng,lat); //创建点坐标
+
+var map = new BMap.Map("map");
+var point = new BMap.Point(104.290493,30.981528);
+creat("m4043",104.290493,30.981528,"2012年4月30日","汉口路28号","151038432334");
+
+
+ var infoWindow; 
+ 
+//根据传过来的信息，添加覆盖物
+function creat(id,lng,lat,time,address,phone){
+
+  
+      
+var message = "<table width='100%' border='0' cellspacing='2' cellpadding='5'>"+
+     "<tr class='even'>"+
+       "<td><div align='center'>呼救时间</div></td>"+
+     "<td><div align='center'>"+time+"</div></td>"+
+       "</tr>"+
+       "<tr class='even'>"+
+       "<td><div align='center'>事故地址</div></td>"+
+       "<td><div align='center'>"+address+"</div></td>"+
+       "</tr>"+
+       "<tr class='even'>"+
+       "<td><div align='center'>呼救电话</div></td>"+
+       "<td><div align='center'>"+phone+"</div></td>"+
+       "</tr>"+
+       "<tr class='odd'>"+
+       "<td colspan='2'><div align='center'>分派    细节    编辑</div></td>"+
+       "</tr>"+
+       "<tr class='odd'>"+
+       "<td colspan='2'><div align='center'>跟踪      打印派车单</div></td>"+   
+       "</tr>"+
+    "</table>";
+      
+      
+var myIcon = new BMap.Icon("./markers/white.png",new BMap.Size(28, 37));
+
+      
+      
+id = new BMap.Marker(new BMap.Point(lng,lat),{icon: myIcon});  // 创建标注
+map.addOverlay(id);          // 将标注添加到地图中
+id.addEventListener("click", function(e){ 
+      this.openInfoWindow(infoWindow); 
+});
+//id.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+ infoWindow = new BMap.InfoWindow(message);  // 创建信息窗口对象
+ 
+}
+
+//点击列表，传一个point值，显示信息框
+function click_list(point){
+map.openInfoWindow(infoWindow,point); 
+}
+
+var ac= new BMap.Autocomplete(     // build an autocomplete object 
+  { "input": "#textwise" , "location": map 
+});
+
+
+ac.addEventListener ( 
+
+"onhighlight", function (e) {   // the mouse on the drop-down list The event 
+var str =  "" ; 
+    var _value = e.fromitem.value; 
+    var value = "" ; 
+    if (e.fromitem.index >  - 1 ) { 
+        value = _value.province +   _value.city +   _value.district +   _value .street +   _value.business; 
+    }     
+    str =  "FromItem <br/> index = "  + e.fromitem.index +  " <br/> value = "  + value;
+    value = '';
+    if (e.toitem.index >  - 1 ) { 
+        _value = e.toitem.value; 
+        value = _value.province +   _value.city +   _value.district +   _value.street +   _value.business; 
+    }     
+    str + =  "<br/><br/>ToItem index=" + e.toitem.index +  "<br/>value="  + value; 
+    G("textwise").innerHTML= str; 
+}); 
+</script>
+<body>
+<input type='text' id='textwise'></input>
+</body>
+</html>
+
