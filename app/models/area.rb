@@ -5,8 +5,8 @@ class Area < ActiveRecord::Base
     where("ST_Contains(geometry, ST_GeomFromText('POINT(#{lat} #{lon})'))")
   end
 
-  def region_contains?(lat, lon)
-  	query = "select * from areas where st_contains(geometry, ST_GeomFromText('POINT(#{lat} #{lon})'))"
+  def self.region_contains?(lat, lon)
+  	select("ST_Contains(ST_GeomFromText(#{areas.geometry}), ST_GeomFromText('POINT(#{lat} #{lon})'))")
   end
 end
 
@@ -15,3 +15,11 @@ end
 # Area.new(name: "sdfasd", geometry: "POLYGON((-149.737965876574 61.1952881991104,
 #  -149.71848377896 61.1953198415937, -149.718483761252 61.1952938698801, 
 #  -149.718483872402 61.1951924591105, -149.737965876574 61.1952881991104))")
+
+# > SELECT 
+# > ST_Contains( 
+# > GeomFromText('POLYGON((0 0,0 10,10 10,10 0,0 0))', -1), 
+# > GeomFromText('POLYGON((5 5,5 6,6 6,6 5,5 5))', -1) ); 
+# > 
+# > returns TRUE 
+# > 
