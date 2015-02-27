@@ -1,12 +1,8 @@
 class Area < ActiveRecord::Base 
   set_rgeo_factory_for_column(:geometry, RGeo::Geographic.spherical_factory(:srid => 4326))
 
-  def self.contains?(lat, lon)
-    where("ST_Contains(geometry, ST_GeomFromText('POINT(#{lat} #{lon})'))")
-  end
-
   def self.region_contains?(lat, lon)
-  	select("ST_Contains(ST_GeomFromText(#{areas.geometry}), ST_GeomFromText('POINT(#{lat} #{lon})'))")
+    ActiveRecord::Base.connection.execute("select id from areas where ST_Contains(ST_GeomFromWKB(areas.geometry), ST_GeomFromText('POINT(#{lat} #{lon})')) = 't'")
   end
 end
 
